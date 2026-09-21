@@ -1,0 +1,44 @@
+# Portfólio N1 Service Desk & Customer Experience Lab
+
+# Git & System
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+
+# Node & Frontend
+node_modules/
+.npm/
+dist/
+build/
+.cache/
+
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+.venv/
+env/
+venv/
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Security & Secrets (Strict Policy)
+*.key
+*.pem
+*.pfx
+*.cert
+credentials.json
+.env
+.env.local
+.env.production
+secrets.yml
+auth_tokens.txt
+
+# OS Temporary Files
+temp/
+scratch/

@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N1 Service Desk Lab &amp; ITSM Operations Portal</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --border-color: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0284c7;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --purple: #a855f7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding-bottom: 40px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0b1329 0%, #1e293b 100%);
+      border-bottom: 1px solid var(--border-color);
+      padding: 18px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-branding h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge-live {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--success);
+      border: 1px solid var(--success);
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 24px auto;
+      padding: 0 20px;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: var(--primary);
+    }
+    .kpi-card.green::before { background: var(--success); }
+    .kpi-card.orange::before { background: var(--warning); }
+    .kpi-card.purple::before { background: var(--purple); }
+
+    .kpi-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 6px 0;
+    }
+
+    .kpi-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Actions and Tabs */
+    .view-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      background: #111827;
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--card-bg);
+      color: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .btn-create {
+      background: var(--primary);
+      color: #0f172a;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .btn-create:hover { background: var(--primary-hover); }
+
+    /* Layout Columns */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr;
+      gap: 20px;
+    }
+    @media (max-width: 1024px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Ticket Table / List */
+    .panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-header h2 {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .ticket-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ticket-item {
+      background: #111827;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 14px;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.1s;
+    }
+
+    .ticket-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .ticket-item.active {
+      border-color: var(--primary);
+      background: #162033;
+    }
+
+    .ticket-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 0.8rem;
+    }
+
+    .ticket-id {
+      font-family: monospace;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge-p1 { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.4); }
+    .badge-p2 { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245,158,11,0.4); }
+    .badge-p3 { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56,189,248,0.4); }
+    .badge-p4 { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border: 1px solid rgba(148,163,184,0.4); }
+
+    .status-badge {
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .status-novo { background: #3b82f6; color: #fff; }
+    .status-atendimento { background: #f59e0b; color: #111827; }
+    .status-resolvido { background: #10b981; color: #fff; }
+    .status-escalado { background: #ef4444; color: #fff; }
+    .status-encerrado { background: #64748b; color: #fff; }
+
+    .ticket-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 4px;
+    }
+
+    .ticket-requester {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Ticket Detail / Action Panel */
+    .detail-card {
+      background: #111827;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .detail-header {
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+      font-size: 0.82rem;
+    }
+
+    .detail-field label {
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 2px;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-field span {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .timeline {
+      margin: 16px 0;
+      border-left: 2px solid var(--border-color);
+      padding-left: 14px;
+    }
+
+    .timeline-item {
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -19px;
+      top: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    .timeline-text {
+      font-size: 0.8rem;
+      color: #cbd5e1;
+    }
+
+    /* Action Buttons in Detail */
+    .action-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: opacity 0.2s;
+    }
+    .btn-action:hover { opacity: 0.85; }
+    .btn-resolve { background: var(--success); color: #fff; }
+    .btn-escalate { background: var(--danger); color: #fff; }
+    .btn-in-progress { background: var(--warning); color: #000; }
+
+    /* Modal Form for Creating Ticket */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      max-width: 650px;
+      width: 100%;
+      padding: 24px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 8px 12px;
+      background: #111827;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .csat-box {
+      margin-top: 12px;
+      padding: 10px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+
+    .disclaimer {
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 16px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-branding">
+      <h1>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+        N1 Service Desk Lab &amp; ITSM Operations
+      </h1>
+      <span class="badge-live">● Sistema Operacional Online</span>
+    </div>
+    <div class="header-meta">
+      Escopo: <strong>Brasília/DF (10:00 às 19:00)</strong> | Atendimento Humanizado &amp; ITIL v4
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Top KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-title">Chamados Ativos Hoje</span>
+        <span class="kpi-value" id="kpi-active">--</span>
+        <span class="kpi-sub">Fila Operacional N1</span>
+      </div>
+      <div class="kpi-card green">
+        <span class="kpi-title">FCR (First Contact Res.)</span>
+        <span class="kpi-value">81.5%</span>
+        <span class="kpi-sub">Meta Operacional: > 75%</span>
+      </div>
+      <div class="kpi-card orange">
+        <span class="kpi-title">SLA Compliance</span>
+        <span class="kpi-value">96.8%</span>
+        <span class="kpi-sub">Tempo Médio Res.: 42 min</span>
+      </div>
+      <div class="kpi-card purple">
+        <span class="kpi-title">Índice CSAT (Usuário)</span>
+        <span class="kpi-value">4.92 ★</span>
+        <span class="kpi-sub">Base: 384 avaliações</span>
+      </div>
+    </div>
+
+    <!-- Actions & Filter Tabs -->
+    <div class="view-actions">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="filterTickets('all')">Todos os Chamados</button>
+        <button class="tab-btn" onclick="filterTickets('Incidente')">Incidentes</button>
+        <button class="tab-btn" onclick="filterTickets('Requisição de Serviço')">Requisições</button>
+        <button class="tab-btn" onclick="filterTickets('Resolvido')">Resolvidos</button>
+        <button class="tab-btn" onclick="filterTickets('Escalado')">Escalados N2/N3</button>
+      </div>
+      <button class="btn-create" onclick="openNewTicketModal()">
+        + Novo Chamado (ITSM)
+      </button>
+    </div>
+
+    <!-- Main Workspace -->
+    <div class="main-grid">
+      <!-- Left Column: Tickets Queue -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Fila de Atendimento do Técnico N1</h2>
+          <span style="font-size: 0.8rem; color: var(--text-muted);" id="ticket-count-badge">Carregando...</span>
+        </div>
+        <div class="ticket-list" id="tickets-container">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Right Column: Ticket Inspection & Actions -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Detalhes da Ocorrência &amp; Troubleshooting</h2>
+        </div>
+        <div id="detail-view">
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Selecione um chamado na fila à esquerda para inspecionar evidências, diagnóstico e ações.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      SIMULAÇÃO TÉCNICA CONTROLADA &amp; ESTUDO APLICADO PARA O CARGO DE TÉCNICO DE EXPERIÊNCIA DO CLIENTE N1 (BRASÍLIA/DF).
+    </div>
+  </div>
+
+  <!-- Modal Novo Chamado -->
+  <div id="modal-new" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="panel-header">
+        <h2>Abertura de Chamado — ITSM N1</h2>
+        <button onclick="closeNewTicketModal()" style="background:none; border:none; color:#fff; font-size:1.2rem; cursor:pointer;">&times;</button>
+      </div>
+      <form id="new-ticket-form" onsubmit="submitNewTicket(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tipo de Demanda (ITIL)</label>
+            <select id="f-type" required>
+              <option value="Incidente">Incidente (Falha / Interrupção)</option>
+              <option value="Requisição de Serviço">Requisição de Serviço (Solicitação)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Categoria</label>
+            <select id="f-cat" required>
+              <option value="Hardware">Hardware</option>
+              <option value="Software">Software</option>
+              <option value="Sistema Operacional">Sistema Operacional</option>
+              <option value="Rede">Rede &amp; Conectividade</option>
+              <option value="Acesso">Identidade &amp; Acesso</option>
+              <option value="E-mail">E-mail &amp; M365</option>
+              <option value="Periféricos">Periféricos &amp; Impressão</option>
+              <option value="Telefonia / VoIP">Telefonia &amp; VoIP</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Título Resumido da Ocorrência</label>
+          <input type="text" id="f-title" placeholder="Ex: Usuário sem acesso à pasta compartilhada do RH" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Solicitante (Nome, Setor, Ramal)</label>
+            <input type="text" id="f-requester" placeholder="Ex: Lucas Ferreira (Operações - Ramal 4120)" required>
+          </div>
+          <div class="form-group">
+            <label>Item Afetado (Hostname / IP)</label>
+            <input type="text" id="f-subcat" placeholder="Ex: DT-DF-0182 / Windows 11" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Impacto</label>
+            <select id="f-impact" onchange="calculatePriority()">
+              <option value="Baixo">Baixo (Individual)</option>
+              <option value="Médio">Médio (Setor / Processo)</option>
+              <option value="Alto">Alto (Empresa / Filial / VIP)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Urgência</label>
+            <select id="f-urgency" onchange="calculatePriority()">
+              <option value="Baixa">Baixa (Pode aguardar)</option>
+              <option value="Média">Média (Trabalho prejudicado com alternativa)</option>
+              <option value="Alta">Alta (Impedimento total imediato)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Prioridade ITIL Calculada: <span id="f-priority-display" style="color: var(--primary); font-weight: bold;">Média</span></label>
+        </div>
+
+        <div class="form-group">
+          <label>Descrição Detalhada do Sintoma &amp; Mensagem de Erro</label>
+          <textarea id="f-desc" rows="3" placeholder="Descreva os sintomas relatados pelo usuário e comportamento observado..." required></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeNewTicketModal()">Cancelar</button>
+          <button type="submit" class="btn-create">Registrar no ITSM</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let tickets = [];
+    let currentFilter = 'all';
+    let selectedTicketId = null;
+
+    async function fetchTickets() {
+      try {
+        const res = await fetch('/api/tickets');
+        tickets = await res.json();
+        render();
+      } catch (e) {
+        console.error("Falha ao carregar tickets:", e);
+      }
+    }
+
+    function render() {
+      const container = document.getElementById('tickets-container');
+      const filtered = tickets.filter(t => {
+        if (currentFilter === 'all') return true;
+        if (currentFilter === 'Incidente') return t.type === 'Incidente';
+        if (currentFilter === 'Requisição de Serviço') return t.type === 'Requisição de Serviço';
+        if (currentFilter === 'Resolvido') return t.status === 'Resolvido' || t.status === 'Encerrado';
+        if (currentFilter === 'Escalado') return t.status === 'Escalado';
+        return true;
+      });
+
+      document.getElementById('ticket-count-badge').textContent = `${filtered.length} chamado(s) exibido(s)`;
+      
+      const activeCount = tickets.filter(t => t.status !== 'Resolvido' && t.status !== 'Encerrado').length;
+      document.getElementById('kpi-active').textContent = activeCount;
+
+      container.innerHTML = '';
+      filtered.forEach(t => {
+        const item = document.createElement('div');
+        item.className = `ticket-item ${t.id === selectedTicketId ? 'active' : ''}`;
+        item.onclick = () => selectTicket(t.id);
+
+        let prioClass = 'badge-p3';
+        if (t.priority === 'Crítica') prioClass = 'badge-p1';
+        if (t.priority === 'Alta') prioClass = 'badge-p2';
+        if (t.priority === 'Baixa') prioClass = 'badge-p4';
+
+        let statusClass = 'status-novo';
+        if (t.status === 'Em Atendimento') statusClass = 'status-atendimento';
+        if (t.status === 'Resolvido') statusClass = 'status-resolvido';
+        if (t.status === 'Escalado') statusClass = 'status-escalado';
+        if (t.status === 'Encerrado') statusClass = 'status-encerrado';
+
+        item.innerHTML = `
+          <div class="ticket-top">
+            <span class="ticket-id">${t.id}</span>
+            <div>
+              <span class="badge ${prioClass}">${t.priority}</span>
+              <span class="status-badge ${statusClass}">${t.status}</span>
+            </div>
+          </div>
+          <div class="ticket-title">${t.title}</div>
+          <div class="ticket-requester">👤 ${t.requester} • 📁 ${t.category}</div>
+        `;
+        container.appendChild(item);
+      });
+
+      if (!selectedTicketId && filtered.length > 0) {
+        selectTicket(filtered[0].id);
+      } else if (selectedTicketId) {
+        renderDetail(tickets.find(t => t.id === selectedTicketId));
+      }
+    }
+
+    function selectTicket(id) {
+      selectedTicketId = id;
+      render();
+    }
+
+    function renderDetail(t) {
+      const detailView = document.getElementById('detail-view');
+      if (!t) {
+        detailView.innerHTML = '<p style="color:var(--text-muted);">Nenhum chamado selecionado.</p>';
+        return;
+      }
+
+      const stepsHtml = (t.troubleshooting_steps || []).map(s => `
+        <div class="timeline-item">
+          <div class="timeline-text">${s}</div>
+        </div>
+      `).join('');
+
+      let csatBlock = '';
+      if (t.csat_rating) {
+        csatBlock = `
+          <div class="csat-box">
+            <strong>★ Avaliação de Satisfação (CSAT): ${t.csat_rating}/5</strong>
+            <p style="margin-top: 4px; font-style: italic; color: #cbd5e1;">"${t.csat_feedback}"</p>
+          </div>
+        `;
+      }
+
+      let escalationBlock = '';
+      if (t.escalation && t.escalation.escalated) {
+        escalationBlock = `
+          <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); padding: 12px; border-radius: 6px; margin: 12px 0;">
+            <strong style="color: #f87171;">⚠️ Chamado Escalonado para: ${t.escalation.escalated_to}</strong>
+            <p style="font-size: 0.8rem; margin-top: 4px; color: #fca5a5;"><strong>Motivo:</strong> ${t.escalation.reason}</p>
+          </div>
+        `;
+      }
+
+      detailView.innerHTML = `
+        <div class="detail-card">
+          <div class="detail-header">
+            <span style="font-family: monospace; color: var(--primary); font-size: 0.85rem; font-weight: bold;">${t.id} (${t.type})</span>
+            <h3 style="font-size: 1.1rem; margin-top: 4px;">${t.title}</h3>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-field">
+              <label>Solicitante</label>
+              <span>${t.requester}</span>
+            </div>
+            <div class="detail-field">
+              <label>Responsável Atual</label>
+              <span>${t.assigned_to}</span>
+            </div>
+            <div class="detail-field">
+              <label>Categoria / Sub</label>
+              <span>${t.category} / ${t.subcategory}</span>
+            </div>
+            <div class="detail-field">
+              <label>Impacto × Urgência</label>
+              <span>${t.impact} / ${t.urgency} (Prio: ${t.priority})</span>
+            </div>
+          </div>
+
+          <div style="margin: 12px 0;">
+            <label style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase;">Descrição da Ocorrência:</label>
+            <p style="font-size: 0.84rem; color: #cbd5e1; margin-top: 4px; background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color);">${t.description}</p>
+          </div>
+
+          <div style="margin: 14px 0;">
+            <label style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase;">Evidências &amp; Roteiro Diagnóstico N1:</label>
+            <div class="timeline">
+              ${stepsHtml || '<div class="timeline-text">Aguardando início do diagnóstico.</div>'}
+            </div>
+          </div>
+
+          ${t.solution ? `
+            <div style="margin: 12px 0; background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.3);">
+              <label style="color: #34d399; font-size: 0.75rem; font-weight: bold; text-transform: uppercase;">Solução Aplicada:</label>
+              <p style="font-size: 0.84rem; color: #ecfdf5; margin-top: 2px;">${t.solution}</p>
+            </div>
+          ` : ''}
+
+          ${escalationBlock}
+          ${csatBlock}
+
+          <div class="action-bar">
+            ${t.status !== 'Resolvido' && t.status !== 'Encerrado' ? `
+              <button class="btn-action btn-in-progress" onclick="updateStatus('${t.id}', 'Em Atendimento')">Assumir Atendimento</button>
+              <button class="btn-action btn-resolve" onclick="resolvePrompt('${t.id}')">✓ Resolver no N1</button>
+              <button class="btn-action btn-escalate" onclick="escalatePrompt('${t.id}')">⇪ Escalar p/ N2</button>
+            ` : `
+              <span style="font-size: 0.8rem; color: var(--success); font-weight: bold;">Chamado finalizado e validado com o cliente.</span>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    function filterTickets(tab) {
+      currentFilter = tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      render();
+    }
+
+    function openNewTicketModal() {
+      document.getElementById('modal-new').style.display = 'flex';
+    }
+
+    function closeNewTicketModal() {
+      document.getElementById('modal-new').style.display = 'none';
+    }
+
+    function calculatePriority() {
+      const imp = document.getElementById('f-impact').value;
+      const urg = document.getElementById('f-urgency').value;
+      let prio = 'Média';
+
+      if (imp === 'Alto' && urg === 'Alta') prio = 'Crítica';
+      else if (imp === 'Alto' || urg === 'Alta') prio = 'Alta';
+      else if (imp === 'Baixo' && urg === 'Baixa') prio = 'Baixa';
+      
+      document.getElementById('f-priority-display').textContent = prio;
+    }
+
+    async function submitNewTicket(e) {
+      e.preventDefault();
+      const payload = {
+        type: document.getElementById('f-type').value,
+        title: document.getElementById('f-title').value,
+        requester: document.getElementById('f-requester').value,
+        category: document.getElementById('f-cat').value,
+        subcategory: document.getElementById('f-subcat').value,
+        impact: document.getElementById('f-impact').value,
+        urgency: document.getElementById('f-urgency').value,
+        priority: document.getElementById('f-priority-display').textContent,
+        description: document.getElementById('f-desc').value,
+        assigned_to: 'Técnico N1 (Experiência do Cliente)',
+        troubleshooting_steps: [
+          'Chamado registrado na plataforma ITSM',
+          'Triagem inicial de Impacto x Urgência realizada',
+          'Aguardando contato com usuário no ramal corporativo'
+        ]
+      };
+
+      await fetch('/api/tickets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      closeNewTicketModal();
+      await fetchTickets();
+    }
+
+    async function updateStatus(id, newStatus) {
+      await fetch(`/api/tickets/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+      await fetchTickets();
+    }
+
+    async function resolvePrompt(id) {
+      const sol = prompt("Descreva a solução aplicada e validada com o usuário:");
+      if (!sol) return;
+
+      const ticket = tickets.find(t => t.id === id);
+      const steps = ticket.troubleshooting_steps || [];
+      steps.push(`Procedimento executado: ${sol}`);
+      steps.push("Solução validada e confirmada diretamente com o solicitante");
+
+      await fetch(`/api/tickets/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status: 'Resolvido',
+          solution: sol,
+          troubleshooting_steps: steps,
+          csat_rating: 5,
+          csat_feedback: 'Problema solucionado rapidamente com cortesia.'
+        })
+      });
+      await fetchTickets();
+    }
+
+    async function escalatePrompt(id) {
+      const toLevel = prompt("Para qual nível deseja escalar? (Ex: N2 Infraestrutura & Redes / N2 Sustentação de Sistemas):", "N2 Infraestrutura & Redes");
+      if (!toLevel) return;
+      const reason = prompt("Justificativa técnica do escalonamento (O que foi testado? Por que N1 não possui alçada?):");
+      if (!reason) return;
+
+      const ticket = tickets.find(t => t.id === id);
+      const steps = ticket.troubleshooting_steps || [];
+      steps.push(`[ESCALONAMENTO] Ficha técnica preenchida e repassada para ${toLevel}. Justificativa: ${reason}`);
+
+      await fetch(`/api/tickets/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status: 'Escalado',
+          assigned_to: toLevel,
+          escalation: {
+            escalated: true,
+            escalated_to: toLevel,
+            reason: reason
+          },
+          troubleshooting_steps: steps
+        })
+      });
+      await fetchTickets();
+    }
+
+    // Initial Load
+    fetchTickets();
+  </script>
+</body>
+</html>

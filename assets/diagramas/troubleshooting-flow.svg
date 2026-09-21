@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 950 260" width="100%" height="100%">
+  <defs>
+    <linearGradient id="stepBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <rect width="950" height="260" fill="#0b1329" rx="10" />
+
+  <text x="30" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="16" font-weight="700" fill="#f8fafc">METODOLOGIA DE TROUBLESHOOTING &amp; EXPERIÊNCIA DO CLIENTE N1</text>
+  <text x="30" y="52" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="11" fill="#94a3b8">Ciclo de Atendimento Humanizado, Raciocínio Diagnóstico e Governança de TI</text>
+
+  <!-- Step 1 -->
+  <g transform="translate(30, 75)" filter="url(#cardShadow)">
+    <rect width="135" height="150" rx="8" fill="url(#stepBg)" stroke="#38bdf8" stroke-width="1.5" />
+    <circle cx="25" cy="25" r="14" fill="#38bdf8" />
+    <text x="25" y="30" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0f172a">1</text>
+    <text x="48" y="29" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f8fafc">ACOLHER</text>
+    <text x="15" y="65" font-family="sans-serif" font-size="9" fill="#94a3b8">• Escuta ativa</text>
+    <text x="15" y="82" font-family="sans-serif" font-size="9" fill="#94a3b8">• Empatia &amp; Calma</text>
+    <text x="15" y="99" font-family="sans-serif" font-size="9" fill="#94a3b8">• Validar dor do usuário</text>
+    <text x="15" y="125" font-family="sans-serif" font-size="9" fill="#38bdf8">Customer Exp.</text>
+  </g>
+
+  <!-- Arrow 1 -->
+  <path d="M 172 150 L 188 150" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+
+  <!-- Step 2 -->
+  <g transform="translate(190, 75)" filter="url(#cardShadow)">
+    <rect width="135" height="150" rx="8" fill="url(#stepBg)" stroke="#0ea5e9" stroke-width="1.5" />
+    <circle cx="25" cy="25" r="14" fill="#0ea5e9" />
+    <text x="25" y="30" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0f172a">2</text>
+    <text x="48" y="29" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f8fafc">REGISTRAR</text>
+    <text x="15" y="65" font-family="sans-serif" font-size="9" fill="#94a3b8">• Hostname / Usuário</text>
+    <text x="15" y="82" font-family="sans-serif" font-size="9" fill="#94a3b8">• Impacto × Urgência</text>
+    <text x="15" y="99" font-family="sans-serif" font-size="9" fill="#94a3b8">• Calcular SLA inicial</text>
+    <text x="15" y="125" font-family="sans-serif" font-size="9" fill="#0ea5e9">ITIL Foundation</text>
+  </g>
+
+  <!-- Step 3 -->
+  <g transform="translate(350, 75)" filter="url(#cardShadow)">
+    <rect width="135" height="150" rx="8" fill="url(#stepBg)" stroke="#10b981" stroke-width="1.5" />
+    <circle cx="25" cy="25" r="14" fill="#10b981" />
+    <text x="25" y="30" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0f172a">3</text>
+    <text x="48" y="29" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f8fafc">DIAGNOSTICAR</text>
+    <text x="15" y="65" font-family="sans-serif" font-size="9" fill="#94a3b8">• Camada 1 a Camada 7</text>
+    <text x="15" y="82" font-family="sans-serif" font-size="9" fill="#94a3b8">• Coleta de logs/ping</text>
+    <text x="15" y="99" font-family="sans-serif" font-size="9" fill="#94a3b8">• Isolar causa provável</text>
+    <text x="15" y="125" font-family="sans-serif" font-size="9" fill="#10b981">Raciocínio Técnico</text>
+  </g>
+
+  <!-- Step 4 -->
+  <g transform="translate(510, 75)" filter="url(#cardShadow)">
+    <rect width="135" height="150" rx="8" fill="url(#stepBg)" stroke="#f59e0b" stroke-width="1.5" />
+    <circle cx="25" cy="25" r="14" fill="#f59e0b" />
+    <text x="25" y="30" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0f172a">4</text>
+    <text x="48" y="29" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f8fafc">SOLUCIONAR</text>
+    <text x="15" y="65" font-family="sans-serif" font-size="9" fill="#94a3b8">• Aplicar KB padrão</text>
+    <text x="15" y="82" font-family="sans-serif" font-size="9" fill="#94a3b8">• Solução menos invasiva</text>
+    <text x="15" y="99" font-family="sans-serif" font-size="9" fill="#94a3b8">• Ou Escalar (N2/N3)</text>
+    <text x="15" y="125" font-family="sans-serif" font-size="9" fill="#f59e0b">Resolução N1</text>
+  </g>
+
+  <!-- Step 5 -->
+  <g transform="translate(670, 75)" filter="url(#cardShadow)">
+    <rect width="135" height="150" rx="8" fill="url(#stepBg)" stroke="#8b5cf6" stroke-width="1.5" />
+    <circle cx="25" cy="25" r="14" fill="#8b5cf6" />
+    <text x="25" y="30" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0f172a">5</text>
+    <text x="48" y="29" font-family="sans-serif" font-size="12" font-weight="bold" fill="#f8fafc">VALIDAR &amp; CX</text>
+    <text x="15" y="65" font-family="sans-serif" font-size="9" fill="#94a3b8">• Teste com o usuário</text>
+    <text x="15" y="82" font-family="sans-serif" font-size="9" fill="#94a3b8">• Confirmar aceite</text>
+    <text x="15" y="99" font-family="sans-serif" font-size="9" fill="#94a3b8">• Feedback de satisfação</text>
+    <text x="15" y="125" font-family="sans-serif" font-size="9" fill="#8b5cf6">Aceite &amp; CSAT</text>
+  </g>
+
+  <!-- Step 6 -->
+  <g transform="translate(815, 75)" filter="url(#cardShadow)">
+    <rect width="115" height="150" rx="8" fill="url(#stepBg)" stroke="#ec4899" stroke-width="1.5" />
+    <circle cx="22" cy="25" r="14" fill="#ec4899" />
+    <text x="22" y="30" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0f172a">6</text>
+    <text x="42" y="29" font-family="sans-serif" font-size="11" font-weight="bold" fill="#f8fafc">PREVENIR</text>
+    <text x="12" y="65" font-family="sans-serif" font-size="8.5" fill="#94a3b8">• Artigo na KB</text>
+    <text x="12" y="82" font-family="sans-serif" font-size="8.5" fill="#94a3b8">• Atualizar FAQ</text>
+    <text x="12" y="99" font-family="sans-serif" font-size="8.5" fill="#94a3b8">• Identificar Problema</text>
+    <text x="12" y="125" font-family="sans-serif" font-size="8.5" fill="#ec4899">Melhoria Contínua</text>
+  </g>
+</svg>

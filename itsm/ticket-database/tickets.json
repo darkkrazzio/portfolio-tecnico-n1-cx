@@ -1,0 +1,196 @@
+[
+  {
+    "id": "INC-2026-1041",
+    "type": "Incidente",
+    "title": "Impressora do departamento financeiro não imprime após queda de energia",
+    "requester": "Carlos Mendes (Financeiro - Ramal 4100)",
+    "category": "Periféricos",
+    "subcategory": "Impressora",
+    "impact": "Médio",
+    "urgency": "Alta",
+    "priority": "Alta",
+    "status": "Resolvido",
+    "assigned_to": "Técnico N1 (Experiência do Cliente)",
+    "created_at": "2026-09-21 10:15",
+    "resolved_at": "2026-09-21 10:38",
+    "sla_minutes": 240,
+    "sla_met": true,
+    "sla_paused_reason": null,
+    "description": "Usuário relata que vários comprovantes fiscais foram enviados para a impressora HP LaserJet da sala 204 e os documentos ficaram presos.",
+    "troubleshooting_steps": [
+      "Realizado acesso remoto à estação via Quick Assist",
+      "Identificado que o serviço Spooler estava parado com arquivo corrompido na fila",
+      "Executado procedimento da KB-WIN-001 (limpeza da pasta C:\\Windows\\System32\\spool\\PRINTERS e reinício do serviço)",
+      "Impressão de página de teste realizada com sucesso"
+    ],
+    "solution": "Fila do Spooler limpa e serviço reiniciado. Impressões retomadas.",
+    "escalation": {
+      "escalated": false,
+      "escalated_to": null,
+      "reason": null
+    },
+    "csat_rating": 5,
+    "csat_feedback": "Atendimento rápido, calmo e muito educado! Salvou nosso fechamento."
+  },
+  {
+    "id": "REQ-2026-1042",
+    "type": "Requisição de Serviço",
+    "title": "Concessão de acesso à pasta compartilhada Relatórios Fiscais",
+    "requester": "Ana Beatriz Ferreira (Controladoria - Ramal 4155)",
+    "category": "Acesso",
+    "subcategory": "Pasta de Rede / Permissões",
+    "impact": "Baixo",
+    "urgency": "Média",
+    "priority": "Média",
+    "status": "Encerrado",
+    "assigned_to": "Técnico N1 (Experiência do Cliente)",
+    "created_at": "2026-09-21 10:45",
+    "resolved_at": "2026-09-21 11:20",
+    "sla_minutes": 480,
+    "sla_met": true,
+    "sla_paused_reason": null,
+    "description": "Nova analista contábil necessita de acesso em modo leitura à pasta \\\\srv-files01\\controladoria$\\relatorios.",
+    "troubleshooting_steps": [
+      "Validada autorização formal em anexo assinada pelo gerente da pasta",
+      "Verificado o grupo correspondente no Active Directory (GRP_FS_CONTROLADORIA_R)",
+      "Adicionado usuário ao grupo via script PowerShell seguro",
+      "Orientado usuário a realizar logoff/logon para renovação do token Kerberos"
+    ],
+    "solution": "Permissão concedida via grupo de AD. Acesso validado pelo usuário.",
+    "escalation": {
+      "escalated": false,
+      "escalated_to": null,
+      "reason": null
+    },
+    "csat_rating": 5,
+    "csat_feedback": "Processo muito ágil e instruções claras sobre o logoff."
+  },
+  {
+    "id": "INC-2026-1043",
+    "type": "Incidente",
+    "title": "Outlook desconectado e solicitando credenciais em loop",
+    "requester": "Juliana Silveira (Recursos Humanos - Ramal 4210)",
+    "category": "E-mail",
+    "subcategory": "Outlook Desktop",
+    "impact": "Baixo",
+    "urgency": "Alta",
+    "priority": "Alta",
+    "status": "Em Atendimento",
+    "assigned_to": "Técnico N1 (Experiência do Cliente)",
+    "created_at": "2026-09-21 11:10",
+    "resolved_at": null,
+    "sla_minutes": 240,
+    "sla_met": true,
+    "sla_paused_reason": null,
+    "description": "Após alteração da senha de rede no início da manhã, o Outlook exibe 'Precisa de Senha' e não aceita a nova credencial.",
+    "troubleshooting_steps": [
+      "Validado acesso ao Webmail (OWA) com sucesso",
+      "Acesso ao Gerenciador de Credenciais do Windows para remoção de tokens antigos de M365",
+      "Em andamento: reinicialização do cliente Outlook para novo handshake moderno (OAuth2)"
+    ],
+    "solution": null,
+    "escalation": {
+      "escalated": false,
+      "escalated_to": null,
+      "reason": null
+    },
+    "csat_rating": null,
+    "csat_feedback": null
+  },
+  {
+    "id": "INC-2026-1044",
+    "type": "Incidente",
+    "title": "Instabilidade de conexão e perda de pacotes na filial inteira de Brasília",
+    "requester": "Roberto Dias (Supervisor Administrativo - Ramal 4001)",
+    "category": "Rede",
+    "subcategory": "Link WAN / BGP",
+    "impact": "Alto",
+    "urgency": "Alta",
+    "priority": "Crítica",
+    "status": "Escalado",
+    "assigned_to": "NOC / N2 Infraestrutura & Redes",
+    "created_at": "2026-09-21 11:30",
+    "resolved_at": null,
+    "sla_minutes": 120,
+    "sla_met": true,
+    "sla_paused_reason": "Aguardando operadora de telecomunicações (Rompimento de fibra)",
+    "description": "Múltiplos setores reportando perda de conectividade com a nuvem e lentidão generalizada.",
+    "troubleshooting_steps": [
+      "Testado ping para Gateway local 192.168.20.1 -> Sucesso (0ms)",
+      "Testado ping para DNS primário WAN -> 80% de perda de pacotes",
+      "Acessado roteador de borda (leitura): constatado flap no circuito de fibra óptica principal",
+      "Preenchida ficha de escalonamento N1 com evidências e aberto chamado emergencial com a operadora de Telecom"
+    ],
+    "solution": null,
+    "escalation": {
+      "escalated": true,
+      "escalated_to": "N2 Infraestrutura de Redes & NOC",
+      "reason": "Falha física no circuito do provedor externo de internet; exige intervenção na operadora."
+    },
+    "csat_rating": null,
+    "csat_feedback": null
+  },
+  {
+    "id": "INC-2026-1045",
+    "type": "Incidente",
+    "title": "Headset USB sem captura de voz nas reuniões do Teams",
+    "requester": "Mariana Lopes (Comercial / Vendas - Ramal 4305)",
+    "category": "Periféricos",
+    "subcategory": "Áudio / VoIP",
+    "impact": "Baixo",
+    "urgency": "Média",
+    "priority": "Média",
+    "status": "Resolvido",
+    "assigned_to": "Técnico N1 (Experiência do Cliente)",
+    "created_at": "2026-09-21 12:00",
+    "resolved_at": "2026-09-21 12:18",
+    "sla_minutes": 480,
+    "sla_met": true,
+    "sla_paused_reason": null,
+    "description": "Usuária informa que vai entrar em reunião de apresentação com cliente às 12:30 e o microfone não emite som.",
+    "troubleshooting_steps": [
+      "Verificado dispositivo de gravação no painel mmsys.cpl",
+      "Identificado que o microfone estava com permissão desativada nas configurações de privacidade do Windows 11",
+      "Habilitada permissão de microfone para aplicativos desktop",
+      "Efetuada chamada de teste no Teams com retorno nítido de áudio"
+    ],
+    "solution": "Permissões de privacidade restabelecidas e dispositivo configurado como padrão no Teams.",
+    "escalation": {
+      "escalated": false,
+      "escalated_to": null,
+      "reason": null
+    },
+    "csat_rating": 5,
+    "csat_feedback": "Muito atencioso, rápido e calmo! Consegui entrar na reunião a tempo."
+  },
+  {
+    "id": "REQ-2026-1046",
+    "type": "Requisição de Serviço",
+    "title": "Solicitação de teclado ergonômico e mouse sem fio homologado",
+    "requester": "Felipe Antunes (Jurídico - Ramal 4412)",
+    "category": "Hardware",
+    "subcategory": "Periféricos",
+    "impact": "Baixo",
+    "urgency": "Baixa",
+    "priority": "Baixa",
+    "status": "Novo",
+    "assigned_to": "Técnico N1 (Experiência do Cliente)",
+    "created_at": "2026-09-21 13:00",
+    "resolved_at": null,
+    "sla_minutes": 1440,
+    "sla_met": true,
+    "sla_paused_reason": null,
+    "description": "Colaborador com laudo ergonômico solicitando kit periférico aprovado pela CIPA.",
+    "troubleshooting_steps": [
+      "Triagem inicial realizada; encaminhado para verificação de estoque de TI na filial Brasília"
+    ],
+    "solution": null,
+    "escalation": {
+      "escalated": false,
+      "escalated_to": null,
+      "reason": null
+    },
+    "csat_rating": null,
+    "csat_feedback": null
+  }
+]
